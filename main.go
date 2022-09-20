@@ -12,16 +12,16 @@ import (
 
 func main() {
 	// new Filter
-	a, err := filter.New()
+	f, err := filter.New()
 	if err != nil {
 		log.Fatal("new Filter failed")
 	}
 
 	// initialze
-	a.Initialize()
+	f.Initialize()
 
 	// get all logs of a block
-	logs, err := a.Logs(big.NewInt(3104475))
+	logs, err := f.Logs(big.NewInt(3104475))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,7 +33,8 @@ func main() {
 	// show logs
 	fmt.Printf("==== all logs, %d\n", len(logs))
 	for i, v := range logs {
-		fmt.Printf("--> log %d:\n", i)
+		fmt.Printf("\n--> log %d:\n", i)
+		fmt.Printf("block: %d\n", v.BlockNumber)
 
 		// get parser func with topics[0]
 		parseFunc := p.ParseMethods[v.Topics[0]]
@@ -52,6 +53,7 @@ func main() {
 				log.Fatal("record ReAcc failed")
 			}
 		} else {
+			fmt.Println("no parser func for this log")
 			continue
 		}
 

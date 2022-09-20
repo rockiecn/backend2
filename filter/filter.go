@@ -3,7 +3,6 @@ package filter
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log"
 	"math/big"
 
@@ -22,38 +21,34 @@ type Filter struct {
 func New() (*Filter, error) {
 	ep := ""
 
-	a := &Filter{
+	f := &Filter{
 		Endpoint: ep,
 	}
 
-	return a, nil
+	return f, nil
 }
 
 // initialize an Filter with endpoint, fill all hashes of event
-func (a *Filter) Initialize() {
-	a.Endpoint = "https://testchain.metamemo.one:24180"
+func (f *Filter) Initialize() {
+	f.Endpoint = "https://testchain.metamemo.one:24180"
 }
 
 // get all logs of a specified lock, with filter table
-func (a *Filter) Logs(block *big.Int) ([]types.Log, error) {
-	if a.Endpoint == "" {
+func (f *Filter) Logs(block *big.Int) ([]types.Log, error) {
+	if f.Endpoint == "" {
 		return nil, errors.New("need initialize")
 	}
 
 	// dial block chain
-	client, err := ethclient.Dial(a.Endpoint)
+	client, err := ethclient.Dial(f.Endpoint)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fb := new(big.Int).Sub(block, big.NewInt(1))
-	tb := block
-	fmt.Printf("from: %s, to: %s\n", fb.String(), tb.String())
-
 	// query a block for all logs, need a flter table
 	query := ethereum.FilterQuery{
-		FromBlock: fb,
-		ToBlock:   tb,
+		FromBlock: block,
+		ToBlock:   block,
 
 		// filter table
 		// Addresses: []common.Address{
