@@ -16,21 +16,21 @@ func main() {
 	if err != nil {
 		log.Fatal("new Filter failed")
 	}
-
-	// initialze
+	// initialize filter
 	f.Initialize()
 
-	// get all logs of a block
+	// get logs of a specified block
 	logs, err := f.Logs(big.NewInt(3104475))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// parser
+	// new parser
 	p := parser.New()
+	// initialize parser
 	p.Initialize()
 
-	// show logs
+	// parse all logs into event struct and record
 	fmt.Printf("==== all logs, %d\n", len(logs))
 	for i, v := range logs {
 		fmt.Printf("\n--> log %d:\n", i)
